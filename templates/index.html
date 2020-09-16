@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiwan Weather</title>
+</head>
+<body>
+    <form action="/", method="POST">
+      <select name="site" id="site" required>
+        <option value="大安區">大安區</option>
+      </select>
+      <input type="submit">
+    </form>
+    {% if weather %}
+      {{ time[0], time[1] }}
+      {% for d in weather %}
+        <div>{{ d }}:{{ weather[d] }}</div>
+      {% endfor %}
+    {% endif %}
+</body>
+</html>
