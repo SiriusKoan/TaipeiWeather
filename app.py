@@ -27,7 +27,7 @@ def api():
     if time.time() - data_cache['update_time'] > 3600:
         # update every one hour
         data_cache['data'] = update_data()
-    data = data_cache['data']['records']['locations'][0]['location']
+    data = data_cache['data']['records']['locations'][0]['location']['weatherElement']
     for site in data:
         if site['locationName'] == sitename:
             return str(site).replace('\'', '\"')
