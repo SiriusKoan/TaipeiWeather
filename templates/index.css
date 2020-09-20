@@ -1,0 +1,16 @@
+.close_menu {
+    background-color: aliceblue;
+    margin-bottom: 5px;
+}
+
+.menu_link {
+    text-decoration: none;
+    color: rgb(0, 0, 255);
+    margin: 5px;
+}
+
+#sidebar {
+    background-color: aliceblue;
+    position: absolute;
+    display: none;
+}
