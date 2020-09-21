@@ -20,7 +20,7 @@ def update_now():
     r1 = requests.get(
         "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?"
         "Authorization=%s"
-        "&locationName=松山,士林,內湖,大安,文山"
+        "&locationName=石牌,松山,士林,內湖,大安,文山"
         "&elementName=TEMP,HUMD,H_24R,WDIR"%config.CWB_TOKEN
     )
     data1 = dict()
@@ -31,7 +31,7 @@ def update_now():
     r2 = requests.get(
         "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?"
         "Authorization=%s"
-        "&locationName=竹子湖,臺北"
+        "&locationName=臺北"
         "&elementName=TEMP,HUMD,24R,WDIR"%config.CWB_TOKEN
     )
     data2 = dict()
