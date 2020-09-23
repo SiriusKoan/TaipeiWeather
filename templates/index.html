@@ -3,28 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Now</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
+    <title>Taipei Weather</title>
+    <script>
+      function closeMenu() {
+        document.getElementById("sidebar").style.display = "none";
+      }
+      function openMenu() {
+        document.getElementById("sidebar").style.display = "block";
+      }
+    </script>
 </head>
 <body>
-    <form action="/", method="POST">
-        <select name="site" id="site" required>
-            <option value="北投區">北投區</option>
-            <option value="松山區">松山區</option>
-            <option value="士林區">士林區</option>
-            <option value="內湖區">內湖區</option>
-            <option value="中山區">中山區</option>
-            <option value="中正區">中正區</option>
-            <option value="信義區">信義區</option>
-            <option value="大安區">大安區</option>
-            <option value="文山區">文山區</option>
-            <option value="南港區">南港區</option>
-            <option value="大同區">大同區</option>
-            <option value="萬華區">萬華區</option>
-        </select>
-        <input type="submit">
+    <div id="sidebar">
+      <button onclick="closeMenu();" class="close_menu">Close &times;</button>
+      <div><a href="/" class="menu_link">HomePage</a></div>
+    </div>
+    <div>
+      <button onclick="openMenu();" class="open_menu">&#9776;</button>
+    </div>
+    <form action="/", method="GET">
+      <select name="site" id="site" required>
+        <option value="北投區">北投區</option>
+        <option value="松山區">松山區</option>
+        <option value="士林區">士林區</option>
+        <option value="內湖區">內湖區</option>
+        <option value="中山區">中山區</option>
+        <option value="中正區">中正區</option>
+        <option value="信義區">信義區</option>
+        <option value="大安區">大安區</option>
+        <option value="文山區">文山區</option>
+        <option value="南港區">南港區</option>
+        <option value="大同區">大同區</option>
+        <option value="萬華區">萬華區</option>
+      </select>
+      <input type="submit">
     </form>
     {% if weather %}
-        {{ weather }}
+      {{ weather }}
     {% endif %}
 </body>
 </html>
