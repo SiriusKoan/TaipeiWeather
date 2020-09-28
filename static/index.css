@@ -14,3 +14,7 @@
     position: absolute;
     display: none;
 }
+#weather_form {
+    display: block;
+    text-align: center;
+}

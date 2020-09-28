@@ -5,6 +5,7 @@ import requests
 import time
 import config
 import json
+from importlib import import_module
 
 app = Flask(__name__)
 CORS(app)
@@ -15,14 +16,14 @@ def fetch_data():
     data_cache = {'forecast_update_time': time.time(), 'now_update_time': time.time() ,'forecast': update_forecast(), 'now': update_now()}
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def index():
-    if request.args.get('site'):
-        site = request.args.get("site")
+    if request.method == "GET":
+        return render_template("index.html", site=None, weather=None, color=None)
+    if request.method == "POST":
+        site = request.form.get('site')
         weather = json.loads(requests.post('%s/api'%config.host, json={'sitename': site, 'data_type': 'now'}).text)
-        return render_template("index.html", weather=weather)
-    else:
-        return render_template("index.html", site=None)
+        return render_template("index.html", site=site, weather=weather, IMPORT=import_module)
         
 
 
@@ -53,6 +54,7 @@ def api():
         if time.time() - data_cache['now_update_time'] > 3600:
             data_cache['now'] = update_now()
         data = data_cache['now']
+        print(data)
         return str(data[config.district_to_site[sitename]]).replace('\'', '\"')
 
 

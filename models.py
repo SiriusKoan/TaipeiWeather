@@ -42,7 +42,8 @@ def update_now():
     r3 = requests.get(
         "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?"
         "Authorization=%s"
-        "&locationName=信義"%config.CWB_TOKEN
+        "&locationName=信義"
+        "&elementName=TEMP,HUMD,H_24R,WDIR"%config.CWB_TOKEN
     )
     site = json.loads(r3.text)['records']['location'][1]
     data3 = {site['locationName']: site['weatherElement']}
