@@ -14,8 +14,9 @@
         document.getElementById("sidebar").style.display = "block";
       }
     </script>
+    {% set config = IMPORT('config') %}
 </head>
-<body style="background-color: rgb{{ color }};">
+<body style="background-color: rgb{{ config.district_color[site] }};">
     <div id="sidebar">
       <button onclick="closeMenu();" class="close_menu">Close &times;</button>
       <div><a href="/" class="menu_link">HomePage</a></div>
@@ -44,7 +45,6 @@
       </form>
     </div>
     {% if weather %}
-      {% set config = IMPORT('config') %}
       {% for factor in weather %}
         {{ config.barometer_to_chinese[factor['elementName']] }}
         {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}

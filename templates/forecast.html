@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
     <title>Now</title>
+    {% set config = IMPORT('config') %}
 </head>
 <body>
     <form action="/forecast", method="POST">
@@ -22,13 +23,38 @@
             <option value="大同區">大同區</option>
             <option value="萬華區">萬華區</option>
         </select>
-        <input type="submit">
+        <input type="submit" value="查詢">
     </form>
     {% if weather %}
-      {{ time[0], time[1] }}
-      {% for d in weather %}
-        <div>{{ d }}:{{ weather[d] }}</div>
-      {% endfor %}
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 2px solid gray;"></th>
+            {% for i in range(weather['weatherElement'][0]['time'] | length) %}
+              <th style="border: 2px solid gray;">
+                <div>{{ weather['weatherElement'][0]['time'][i]['startTime'][:-3] }}</div>
+                <div>~</div>
+                <div>{{ weather['weatherElement'][0]['time'][i]['endTime'][:-3] }}</div>
+              </th>
+            {% endfor %}
+          </tr>
+          {% for factor in weather['weatherElement'] %}
+            <tr>
+              {% if factor['elementName'] != 'PoP6h' %}
+                <td style="border: 2px solid gray;">{{ config.barometer_to_chinese[factor['elementName']] }}</td>
+                {% for val in factor['time'] %}
+                  <td style="border: 2px solid gray;">{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
+                {% endfor %}
+              {% else %}
+                <td style="border: 2px solid gray;">{{ config.barometer_to_chinese['PoP6h'] }}</td>
+                {% for val in factor['time'] %}
+                  <td colspan="2" style="border: 2px solid gray;">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
+                {% endfor %}
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </thead>
+      </table>
     {% endif %}
 </body>
 </html>
