@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
     <title>Now</title>
-    {% set config = IMPORT('config') %}
+    {% if weather %}
+      {% set config = IMPORT('config') %}
+    {% endif %}
 </head>
 <body>
     <form action="/forecast", method="POST">
@@ -25,30 +28,33 @@
         </select>
         <input type="submit" value="查詢">
     </form>
+    <a href="/" class="link">HomePage</a>
+    <br>
     {% if weather %}
+      last update: {{ last_update }}
       <table style="width: 100%; border-collapse: collapse;">
         <thead>
           <tr>
-            <th style="border: 2px solid gray;"></th>
+            <th></th>
             {% for i in range(weather['weatherElement'][0]['time'] | length) %}
-              <th style="border: 2px solid gray;">
-                <div>{{ weather['weatherElement'][0]['time'][i]['startTime'][:-3] }}</div>
+              <th>
+                <div>{{ weather['weatherElement'][0]['time'][i]['startTime'][5:-3] }}</div>
                 <div>~</div>
-                <div>{{ weather['weatherElement'][0]['time'][i]['endTime'][:-3] }}</div>
+                <div>{{ weather['weatherElement'][0]['time'][i]['endTime'][5:-3] }}</div>
               </th>
             {% endfor %}
           </tr>
           {% for factor in weather['weatherElement'] %}
             <tr>
               {% if factor['elementName'] != 'PoP6h' %}
-                <td style="border: 2px solid gray;">{{ config.barometer_to_chinese[factor['elementName']] }}</td>
+                <td>{{ config.barometer_to_chinese[factor['elementName']] }}</td>
                 {% for val in factor['time'] %}
-                  <td style="border: 2px solid gray;">{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
+                  <td>{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
                 {% endfor %}
               {% else %}
-                <td style="border: 2px solid gray;">{{ config.barometer_to_chinese['PoP6h'] }}</td>
+                <td>{{ config.barometer_to_chinese['PoP6h'] }}</td>
                 {% for val in factor['time'] %}
-                  <td colspan="2" style="border: 2px solid gray;">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
+                  <td colspan="2">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
                 {% endfor %}
               {% endif %}
             </tr>

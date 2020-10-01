@@ -3,10 +3,9 @@
     margin-bottom: 5px;
 }
 
-.menu_link {
+.link {
     text-decoration: none;
     color: rgb(0, 0, 255);
-    margin: 5px;
 }
 
 #sidebar {
@@ -17,4 +16,9 @@
 #weather_form {
     display: block;
     text-align: center;
+}
+
+td, th {
+    border: 2px solid gray;
+    height: 50px;
 }

@@ -14,12 +14,15 @@
         document.getElementById("sidebar").style.display = "block";
       }
     </script>
-    {% set config = IMPORT('config') %}
+    {% if weather %}
+      {% set config = IMPORT('config') %}
+    {% endif %}
 </head>
-<body style="background-color: rgb{{ config.district_color[site] }};">
+<body {% if weather %} style="background-color: rgb{{ config.district_color[site] }};" {% endif %}>
     <div id="sidebar">
       <button onclick="closeMenu();" class="close_menu">Close &times;</button>
-      <div><a href="/" class="menu_link">HomePage</a></div>
+      <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
+      <div><a href="/forecast" class="link" style="margin: 5px;">Forecast</a></div>
     </div>
     <div>
       <button onclick="openMenu();" class="open_menu">&#9776;</button>
@@ -35,7 +38,7 @@
           <option value="中山區">中山區</option>
           <option value="中正區">中正區</option>
           <option value="信義區">信義區</option>
-          <option value="大安區">#大安區</option>
+          <option value="大安區">大安區</option>
           <option value="文山區">文山區</option>
           <option value="南港區">南港區</option>
           <option value="大同區">大同區</option>
@@ -45,9 +48,15 @@
       </form>
     </div>
     {% if weather %}
+      <div>last update: {{ last_update }}</div>
       {% for factor in weather %}
         {{ config.barometer_to_chinese[factor['elementName']] }}
-        {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
+        {% if factor['elementName'] == 'HUMD' %}
+          {# use percentage for humidity #}
+          {{ (factor['elementValue'] | float) * 100 }}{{ config.units[factor['elementName']] }}
+        {% else %}
+          {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
+        {% endif %}
       {% endfor %}
     {% endif %}
 </body>

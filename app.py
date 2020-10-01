@@ -6,6 +6,7 @@ import time
 import config
 import json
 from importlib import import_module
+import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -25,7 +26,7 @@ def fetch_data():
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html", site=None, weather=None, color=None)
+        return render_template("index.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
         weather = json.loads(
@@ -33,15 +34,22 @@ def index():
                 "%s/api" % config.host, json={"sitename": site, "data_type": "now"}
             ).text
         )
+        last_update = datetime.datetime.fromtimestamp(
+            data_cache["now_update_time"]
+        ).strftime("%Y-%m-%d %H:%M:%S")
         return render_template(
-            "index.html", site=site, weather=weather, IMPORT=import_module
+            "index.html",
+            site=site,
+            weather=weather,
+            IMPORT=import_module,
+            last_update=last_update,
         )
 
 
 @app.route("/forecast", methods=["GET", "POST"])
 def forecast():
     if request.method == "GET":
-        return render_template("forecast.html", site=None)
+        return render_template("forecast.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
         weather = json.loads(
@@ -49,8 +57,15 @@ def forecast():
                 "%s/api" % config.host, json={"sitename": site, "data_type": "forecast"}
             ).text
         )
-        print(weather["weatherElement"][1]["time"])
-        return render_template("forecast.html", weather=weather, IMPORT=import_module)
+        last_update = datetime.datetime.fromtimestamp(
+            data_cache["forecast_update_time"]
+        ).strftime("%Y-%m-%d %H:%M:%S")
+        return render_template(
+            "forecast.html",
+            weather=weather,
+            IMPORT=import_module,
+            last_update=last_update,
+        )
 
 
 @app.route("/api", methods=["POST"])
@@ -70,7 +85,6 @@ def api():
         if time.time() - data_cache["now_update_time"] > 3600:
             data_cache["now"] = update_now()
         data = data_cache["now"]
-        print(data)
         return str(data[config.district_to_site[sitename]]).replace("'", '"')
 
 
