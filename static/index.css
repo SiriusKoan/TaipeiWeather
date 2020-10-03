@@ -22,3 +22,10 @@ td, th {
     border: 2px solid gray;
     height: 50px;
 }
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 99%;
+    text-align: center;
+    margin-bottom: 5px;
+}

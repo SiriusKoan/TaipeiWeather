@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
-    <title>Now</title>
+    <title>Weather Forecast</title>
     {% if weather %}
       {% set config = IMPORT('config') %}
     {% endif %}
@@ -62,5 +62,8 @@
         </thead>
       </table>
     {% endif %}
+    <footer>
+      <span>© 2020 SiriusKoan & Red</span>
+    </footer>
 </body>
 </html>
