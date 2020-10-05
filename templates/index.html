@@ -20,7 +20,7 @@
   {% endif %}
 </head>
 
-<body {% if weather %} style="background-color: rgb{{ config.district_color[site] }};" {% endif %}>
+<body {% if weather %} style="background-image: url('{{ url_for('static',filename='background/%s.png'%site) }}');" {% else %} style="background-image: url('{{ url_for('static',filename='background/default.png') }}');" {% endif %}>
   <div id="sidebar">
     <button onclick="closeMenu();" class="close_menu">Close &times;</button>
     <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
