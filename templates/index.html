@@ -9,10 +9,12 @@
   <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
   <script>
     function closeMenu() {
-      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("sidebar").style.zIndex = "-1";
+      document.getElementById("open-button").style.zIndex = "100";
     }
     function openMenu() {
-      document.getElementById("sidebar").style.display = "block";
+      document.getElementById("sidebar").style.zIndex = "100";
+      document.getElementById("open-button").style.zIndex = "-1";
     }
   </script>
   {% if weather %}
@@ -20,16 +22,16 @@
   {% endif %}
 </head>
 
-<body {% if weather %} style="background-image: url('{{ url_for('static',filename='background/%s.png'%site) }}');" {% else %} style="background-image: url('{{ url_for('static',filename='background/default.png') }}');" {% endif %}>
+<body>
   <div id="sidebar">
     <button onclick="closeMenu();" class="close_menu">Close &times;</button>
     <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
     <div><a href="/forecast" class="link" style="margin: 5px;">Forecast</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" class="open_menu">&#9776;</button>
+    <button onclick="openMenu();" class="open_menu" id="open-button">&#9776;</button>
   </div>
-  <img src="{{ url_for('static',filename='districts/%s.jpg'%site) }}" alt="{{ site }}">
+  {% if weather %}<img src="{{ url_for('static',filename='districts/%s.jpg'%site) }}" alt="{{ site }}">{% endif %}
   <div id="weather_form">
     <form action="/" , method="POST">
       <select name="site" id="site" required>
@@ -62,8 +64,15 @@
   {% endfor %}
   {% endif %}
   <footer>
-    <span>© 2020 SiriusKoan & Red</span>
+    <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
   </footer>
+  <div id="bg">
+    <img
+      src="{% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %}" usemap="#taipei-map">
+      <map name="taipei-map">
+        <area target="" alt="" title="" href="" coords="526,526,527,544,507,549,502,563,521,589,540,613,567,614,581,607,593,613,605,612,577,568,586,557,583,521" shape="poly">
+    </map>
+  </div>
 </body>
 
 </html>
