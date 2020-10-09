@@ -1,6 +1,8 @@
-.close_menu {
+#close_menu {
     background-color: aliceblue;
     margin-bottom: 5px;
+    width: 100%;
+    border: none;
 }
 
 .link {
@@ -12,6 +14,8 @@
     background-color: aliceblue;
     position: absolute;
     display: none;
+    height: 100%;
+    opacity: 0.85;
 }
 
 #weather_form {
@@ -51,11 +55,6 @@ body {
     margin: 0px;
 }
 
-div {
-    z-index: 10;
-    position: relative;
-}
-
 #map {
     zoom: 0.5;
     -o-transform: scale(0.5);
@@ -75,4 +74,12 @@ div {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+area {
+    cursor: pointer;
+}
+
+#weather-element {
+    text-align: center;
 }

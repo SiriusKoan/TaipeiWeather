@@ -31,13 +31,14 @@
 
 <body>
   <div id="sidebar">
-    <button onclick="closeMenu();" class="close_menu">Close &times;</button>
+    <button onclick="closeMenu();" id="close_menu">Close &times;</button>
     <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
     <div><a href="/forecast" class="link" style="margin: 5px;">Forecast</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" class="open_menu" id="open-button">&#9776;</button>
+    <button onclick="openMenu();" class="open_menu" id="open-button" style="position: absolute;">&#9776;</button>
   </div>
+  <div id="weather-element">
   {% if weather %}<img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">{% endif %}
   <form action="/" , method="POST" id="weather-form" style="display: none;">
     <input type="hidden" value="test" id="site" name="site">
@@ -54,6 +55,7 @@
   {% endif %}
   {% endfor %}
   {% endif %}
+  </div>
 
   <div id="bg">
     <div id="map">

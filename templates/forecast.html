@@ -1,69 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
-    <title>Weather Forecast</title>
-    {% if weather %}
-      {% set config = IMPORT('config') %}
-    {% endif %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
+  <title>Weather Forecast</title>
+  {% if weather %}
+  {% set config = IMPORT('config') %}
+  {% endif %}
+  <script>
+    function closeMenu() {
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("open-button").style.display = "block";
+    }
+    function openMenu() {
+      document.getElementById("sidebar").style.display = "block";
+      document.getElementById("open-button").style.display = "none";
+    }
+  </script>
 </head>
+
 <body>
-    <form action="/forecast", method="POST">
-        <select name="site" id="site" required>
-            <option value="北投區">北投區</option>
-            <option value="松山區">松山區</option>
-            <option value="士林區">士林區</option>
-            <option value="內湖區">內湖區</option>
-            <option value="中山區">中山區</option>
-            <option value="中正區">中正區</option>
-            <option value="信義區">信義區</option>
-            <option value="大安區">大安區</option>
-            <option value="文山區">文山區</option>
-            <option value="南港區">南港區</option>
-            <option value="大同區">大同區</option>
-            <option value="萬華區">萬華區</option>
-        </select>
-        <input type="submit" value="查詢">
-    </form>
-    <a href="/" class="link">HomePage</a>
-    <br>
-    {% if weather %}
-      last update: {{ last_update }}
-      <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th></th>
-            {% for i in range(weather['weatherElement'][0]['time'] | length) %}
-              <th>
-                <div>{{ weather['weatherElement'][0]['time'][i]['startTime'][5:-3] }}</div>
-                <div>~</div>
-                <div>{{ weather['weatherElement'][0]['time'][i]['endTime'][5:-3] }}</div>
-              </th>
-            {% endfor %}
-          </tr>
-          {% for factor in weather['weatherElement'] %}
-            <tr>
-              {% if factor['elementName'] != 'PoP6h' %}
-                <td>{{ config.barometer_to_chinese[factor['elementName']] }}</td>
-                {% for val in factor['time'] %}
-                  <td>{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
-                {% endfor %}
-              {% else %}
-                <td>{{ config.barometer_to_chinese['PoP6h'] }}</td>
-                {% for val in factor['time'] %}
-                  <td colspan="2">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
-                {% endfor %}
-              {% endif %}
-            </tr>
-          {% endfor %}
-        </thead>
-      </table>
-    {% endif %}
-    <footer>
-      <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
-    </footer>
+  <div id="sidebar">
+    <button onclick="closeMenu();" id="close_menu">Close &times;</button>
+    <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
+    <div><a href="/forecast" class="link" style="margin: 5px;">Forecast</a></div>
+  </div>
+  <div>
+    <button onclick="openMenu();" class="open_menu" id="open-button" style="position: absolute;">&#9776;</button>
+  </div>
+  <form action="/forecast" , method="POST" style="text-align: center;">
+    <select name="site" id="site" required>
+      <option value="北投區">北投區</option>
+      <option value="松山區">松山區</option>
+      <option value="士林區">士林區</option>
+      <option value="內湖區">內湖區</option>
+      <option value="中山區">中山區</option>
+      <option value="中正區">中正區</option>
+      <option value="信義區">信義區</option>
+      <option value="大安區">大安區</option>
+      <option value="文山區">文山區</option>
+      <option value="南港區">南港區</option>
+      <option value="大同區">大同區</option>
+      <option value="萬華區">萬華區</option>
+    </select>
+    <input type="submit" value="查詢">
+  </form>
+  <br>
+  {% if weather %}
+  last update: {{ last_update }}
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th></th>
+        {% for i in range(weather['weatherElement'][0]['time'] | length) %}
+        <th>
+          <div>{{ weather['weatherElement'][0]['time'][i]['startTime'][5:-3] }}</div>
+          <div>~</div>
+          <div>{{ weather['weatherElement'][0]['time'][i]['endTime'][5:-3] }}</div>
+        </th>
+        {% endfor %}
+      </tr>
+      {% for factor in weather['weatherElement'] %}
+      <tr>
+        {% if factor['elementName'] != 'PoP6h' %}
+        <td>{{ config.barometer_to_chinese[factor['elementName']] }}</td>
+        {% for val in factor['time'] %}
+        <td>{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
+        {% endfor %}
+        {% else %}
+        <td>{{ config.barometer_to_chinese['PoP6h'] }}</td>
+        {% for val in factor['time'] %}
+        <td colspan="2">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
+        {% endfor %}
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </thead>
+  </table>
+  {% endif %}
+  <footer>
+    <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
+  </footer>
 </body>
+
 </html>

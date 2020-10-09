@@ -35,7 +35,7 @@ def index():
             ).text
         )
         last_update = datetime.datetime.fromtimestamp(
-            data_cache["now_update_time"]
+            data_cache["now_update_time"] + config.server_timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
         return render_template(
             "index.html",
