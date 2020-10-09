@@ -56,45 +56,6 @@ div {
     position: relative;
 }
 
-#bg {
-    margin: 0px;
-    width: 100%;
-    height: 100vh;
-    background: no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    -webkit-animation: bgfadein 4s;
-    /* Chrome, Safari, Opera */
-    animation: bgfadein 3s;
-    position: absolute;
-    top: 0;
-    z-index: -1;
-}
-
-/* Chrome, Safari, Opera */
-
-@-webkit-keyframes bgfadein {
-    from {
-        opacity: 0.2;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Standard syntax */
-
-@keyframes bgfadein {
-    from {
-        opacity: 0.2;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 #map {
     zoom: 0.5;
     -o-transform: scale(0.5);

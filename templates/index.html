@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
+  <style>{% include 'background.css' %}</style>
+  <!--<link rel="stylesheet" href="{{ url_for('static',filename='background.css') }}">-->
   <title>Taipei Weather</title>
   <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
   <script>
@@ -36,7 +38,7 @@
   <div>
     <button onclick="openMenu();" class="open_menu" id="open-button">&#9776;</button>
   </div>
-  {% if weather %}<img src="{{ url_for('static',filename='districts/%s.jpg'%site) }}" alt="{{ site }}">{% endif %}
+  {% if weather %}<img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">{% endif %}
   <form action="/" , method="POST" id="weather-form" style="display: none;">
     <input type="hidden" value="test" id="site" name="site">
   </form>
@@ -52,8 +54,8 @@
   {% endif %}
   {% endfor %}
   {% endif %}
-  <div id="bg"
-    style="background-image: url({% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %});">
+
+  <div id="bg">
     <div id="map">
       <img src="{% if not weather %}{{ url_for('static',filename='map.png') }}{% endif %}" usemap="#taipei-map"
         id="map-img">
