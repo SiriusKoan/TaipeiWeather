@@ -58,7 +58,7 @@ def forecast():
             ).text
         )
         last_update = datetime.datetime.fromtimestamp(
-            data_cache["forecast_update_time"]
+            data_cache["forecast_update_time"] + config.server_timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
         return render_template(
             "forecast.html",
@@ -74,15 +74,15 @@ def api():
     sitename = payload["sitename"]
     data_type = payload["data_type"]
     if data_type == "forecast":
-        if time.time() - data_cache["forecast_update_time"] > 3600:
-            # update every one hour
+        if time.time() - data_cache["forecast_update_time"] > 600:
+            # update every ten minutes
             data_cache["forecast"] = update_forecast()
         data = data_cache["forecast"]
         for site in data:
             if site["locationName"] == sitename:
                 return str(site).replace("'", '"')  # return json
     if data_type == "now":
-        if time.time() - data_cache["now_update_time"] > 3600:
+        if time.time() - data_cache["now_update_time"] > 600:
             data_cache["now"] = update_now()
         data = data_cache["now"]
         return str(data[config.district_to_site[sitename]]).replace("'", '"')

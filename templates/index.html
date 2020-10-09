@@ -16,6 +16,11 @@
       document.getElementById("sidebar").style.zIndex = "100";
       document.getElementById("open-button").style.zIndex = "-1";
     }
+
+    function submitSite(value) {
+      document.getElementById('site').value = value;
+      document.getElementById('weather-form').submit();
+    }
   </script>
   {% if weather %}
   {% set config = IMPORT('config') %}
@@ -32,25 +37,9 @@
     <button onclick="openMenu();" class="open_menu" id="open-button">&#9776;</button>
   </div>
   {% if weather %}<img src="{{ url_for('static',filename='districts/%s.jpg'%site) }}" alt="{{ site }}">{% endif %}
-  <div id="weather_form">
-    <form action="/" , method="POST">
-      <select name="site" id="site" required>
-        <option value="北投區">北投區</option>
-        <option value="松山區">松山區</option>
-        <option value="士林區">士林區</option>
-        <option value="內湖區">內湖區</option>
-        <option value="中山區">中山區</option>
-        <option value="中正區">中正區</option>
-        <option value="信義區">信義區</option>
-        <option value="大安區">大安區</option>
-        <option value="文山區">文山區</option>
-        <option value="南港區">南港區</option>
-        <option value="大同區">大同區</option>
-        <option value="萬華區">萬華區</option>
-      </select>
-      <input type="submit" value="查詢">
-    </form>
-  </div>
+  <form action="/" , method="POST" id="weather-form" style="display: none;">
+    <input type="hidden" value="test" id="site" name="site">
+  </form>
   {% if weather %}
   <div>last update: {{ last_update }}</div>
   {% for factor in weather %}
@@ -63,15 +52,38 @@
   {% endif %}
   {% endfor %}
   {% endif %}
+  <div id="map">
+    <img src="{% if not weather %}{{ url_for('static',filename='map.png') }}{% endif %}" usemap="#taipei-map">
+    <map name="taipei-map">
+      <area onclick="submitSite('北投區');"
+        coords="423,29,398,34,289,141,210,177,133,264,78,338,53,383,91,431,168,412,193,460,229,486,291,432,320,331,427,211,461,85"
+        shape="poly">
+      <area onclick="submitSite('士林區');"
+        coords="477,108,453,137,436,205,408,254,378,314,336,333,300,414,243,500,202,484,62,433,82,488,261,578,300,584,340,521,463,467,585,382"
+        shape="poly">
+      <area onclick="submitSite('大同區');" coords="283,583,233,587,227,689,275,691" shape="poly">
+      <area onclick="submitSite('中山區');"
+        coords="344,531,298,594,283,687,356,702,389,645,344,617,400,596,446,592,392,536" shape="poly">
+      <area onclick="submitSite('松山區');" coords="359,616,390,642,372,701,495,687,465,677,455,599" shape="poly">
+      <area onclick="submitSite('內湖區');"
+        coords="554,632,601,645,654,581,645,497,551,442,450,492,409,520,468,594,464,652,491,675" shape="poly">
+      <area onclick="submitSite('萬華區');" coords="230,694,210,691,133,740,156,853,183,865,246,810,212,772" shape="poly">
+      <area onclick="submitSite('中正區');" coords="243,699,308,709,286,761,335,845,318,852,272,813,224,777,240,723"
+        shape="poly">
+      <area onclick="submitSite('大安區');" coords="328,710,413,715,399,788,443,850,348,853,293,758" shape="poly">
+      <area onclick="submitSite('信義區');" coords="422,713,491,696,540,762,494,827,453,852,407,784" shape="poly">
+      <area onclick="submitSite('南港區');"
+        coords="495,834,808,794,804,770,655,721,638,685,655,638,553,649,501,680,542,769" shape="poly">
+      <area onclick="submitSite('文山區');" coords="335,857,555,842,576,985,640,1021,564,1049,430,1031,397,953,313,946"
+        shape="poly">
+    </map>
+  </div>
   <footer>
     <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
   </footer>
   <div id="bg">
     <img
-      src="{% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %}" usemap="#taipei-map">
-      <map name="taipei-map">
-        <area target="" alt="" title="" href="" coords="526,526,527,544,507,549,502,563,521,589,540,613,567,614,581,607,593,613,605,612,577,568,586,557,583,521" shape="poly">
-    </map>
+      src="{% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %}">
   </div>
 </body>
 

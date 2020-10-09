@@ -37,10 +37,12 @@ footer {
     margin-bottom: 5px;
     color: black;
 }
+
 footer a {
     text-decoration: none;
     color: black;
 }
+
 footer a:hover {
     text-decoration: underline;
 }
@@ -65,7 +67,7 @@ div {
     background-size: cover;
     -webkit-animation: bgfadein 4s;
     /* Chrome, Safari, Opera */
-    animation: bgfadein 4s;
+    animation: bgfadein 3s;
     position: absolute;
     top: 0;
     z-index: -1;
@@ -96,4 +98,10 @@ div {
 #bg img {
     width: 100%;
     height: 100%;
+}
+
+#map {
+    zoom: 0.5;
+    -o-transform: scale(0.5);
+    -moz-transform: scale(0.5)
 }
