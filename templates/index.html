@@ -9,12 +9,12 @@
   <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
   <script>
     function closeMenu() {
-      document.getElementById("sidebar").style.zIndex = "-1";
-      document.getElementById("open-button").style.zIndex = "100";
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("open-button").style.display = "block";
     }
     function openMenu() {
-      document.getElementById("sidebar").style.zIndex = "100";
-      document.getElementById("open-button").style.zIndex = "-1";
+      document.getElementById("sidebar").style.display = "block";
+      document.getElementById("open-button").style.display = "none";
     }
 
     function submitSite(value) {
@@ -46,45 +46,46 @@
   {{ config.barometer_to_chinese[factor['elementName']] }}
   {% if factor['elementName'] == 'HUMD' %}
   {# use percentage for humidity #}
-  {{ (factor['elementValue'] | float) * 100 }}{{ config.units[factor['elementName']] }}
+  {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
   {% else %}
   {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
   {% endif %}
   {% endfor %}
   {% endif %}
-  <div id="map">
-    <img src="{% if not weather %}{{ url_for('static',filename='map.png') }}{% endif %}" usemap="#taipei-map">
-    <map name="taipei-map">
-      <area onclick="submitSite('北投區');"
-        coords="423,29,398,34,289,141,210,177,133,264,78,338,53,383,91,431,168,412,193,460,229,486,291,432,320,331,427,211,461,85"
-        shape="poly">
-      <area onclick="submitSite('士林區');"
-        coords="477,108,453,137,436,205,408,254,378,314,336,333,300,414,243,500,202,484,62,433,82,488,261,578,300,584,340,521,463,467,585,382"
-        shape="poly">
-      <area onclick="submitSite('大同區');" coords="283,583,233,587,227,689,275,691" shape="poly">
-      <area onclick="submitSite('中山區');"
-        coords="344,531,298,594,283,687,356,702,389,645,344,617,400,596,446,592,392,536" shape="poly">
-      <area onclick="submitSite('松山區');" coords="359,616,390,642,372,701,495,687,465,677,455,599" shape="poly">
-      <area onclick="submitSite('內湖區');"
-        coords="554,632,601,645,654,581,645,497,551,442,450,492,409,520,468,594,464,652,491,675" shape="poly">
-      <area onclick="submitSite('萬華區');" coords="230,694,210,691,133,740,156,853,183,865,246,810,212,772" shape="poly">
-      <area onclick="submitSite('中正區');" coords="243,699,308,709,286,761,335,845,318,852,272,813,224,777,240,723"
-        shape="poly">
-      <area onclick="submitSite('大安區');" coords="328,710,413,715,399,788,443,850,348,853,293,758" shape="poly">
-      <area onclick="submitSite('信義區');" coords="422,713,491,696,540,762,494,827,453,852,407,784" shape="poly">
-      <area onclick="submitSite('南港區');"
-        coords="495,834,808,794,804,770,655,721,638,685,655,638,553,649,501,680,542,769" shape="poly">
-      <area onclick="submitSite('文山區');" coords="335,857,555,842,576,985,640,1021,564,1049,430,1031,397,953,313,946"
-        shape="poly">
-    </map>
+  <div id="bg"
+    style="background-image: url({% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %});">
+    <div id="map">
+      <img src="{% if not weather %}{{ url_for('static',filename='map.png') }}{% endif %}" usemap="#taipei-map"
+        id="map-img">
+      <map name="taipei-map">
+        <area onclick="submitSite('北投區');"
+          coords="423,29,398,34,289,141,210,177,133,264,78,338,53,383,91,431,168,412,193,460,229,486,291,432,320,331,427,211,461,85"
+          shape="poly">
+        <area onclick="submitSite('士林區');"
+          coords="477,108,453,137,436,205,408,254,378,314,336,333,300,414,243,500,202,484,62,433,82,488,261,578,300,584,340,521,463,467,585,382"
+          shape="poly">
+        <area onclick="submitSite('大同區');" coords="283,583,233,587,227,689,275,691" shape="poly">
+        <area onclick="submitSite('中山區');"
+          coords="344,531,298,594,283,687,356,702,389,645,344,617,400,596,446,592,392,536" shape="poly">
+        <area onclick="submitSite('松山區');" coords="359,616,390,642,372,701,495,687,465,677,455,599" shape="poly">
+        <area onclick="submitSite('內湖區');"
+          coords="554,632,601,645,654,581,645,497,551,442,450,492,409,520,468,594,464,652,491,675" shape="poly">
+        <area onclick="submitSite('萬華區');" coords="230,694,210,691,133,740,156,853,183,865,246,810,212,772"
+          shape="poly">
+        <area onclick="submitSite('中正區');" coords="243,699,308,709,286,761,335,845,318,852,272,813,224,777,240,723"
+          shape="poly">
+        <area onclick="submitSite('大安區');" coords="328,710,413,715,399,788,443,850,348,853,293,758" shape="poly">
+        <area onclick="submitSite('信義區');" coords="422,713,491,696,540,762,494,827,453,852,407,784" shape="poly">
+        <area onclick="submitSite('南港區');"
+          coords="495,834,808,794,804,770,655,721,638,685,655,638,553,649,501,680,542,769" shape="poly">
+        <area onclick="submitSite('文山區');" coords="335,857,555,842,576,985,640,1021,564,1049,430,1031,397,953,313,946"
+          shape="poly">
+      </map>
+    </div>
   </div>
   <footer>
     <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
   </footer>
-  <div id="bg">
-    <img
-      src="{% if weather %}{{ url_for('static',filename='background/%s.png'%site) }}{% else %}{{ url_for('static',filename='background/default.png') }}{% endif %}">
-  </div>
 </body>
 
 </html>
