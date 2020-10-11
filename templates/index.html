@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
-  <style>{% include 'background.css' %}</style>
+  <style>
+    {% include 'background.css'%}
+  </style>
   <!--<link rel="stylesheet" href="{{ url_for('static',filename='background.css') }}">-->
   <title>Taipei Weather</title>
   <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
@@ -32,29 +34,30 @@
 <body>
   <div id="sidebar">
     <button onclick="closeMenu();" id="close_menu">Close &times;</button>
-    <div><a href="/" class="link" style="margin: 5px;">HomePage</a></div>
-    <div><a href="/forecast" class="link" style="margin: 5px;">Forecast</a></div>
+    <div><a href="/" class="link">HomePage</a></div>
+    <div><a href="/forecast" class="link">Forecast</a></div>
+    <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link">Github repo</a></div>
   </div>
   <div>
     <button onclick="openMenu();" class="open_menu" id="open-button" style="position: absolute;">&#9776;</button>
   </div>
   <div id="weather-element">
-  {% if weather %}<img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">{% endif %}
-  <form action="/" , method="POST" id="weather-form" style="display: none;">
-    <input type="hidden" value="test" id="site" name="site">
-  </form>
-  {% if weather %}
-  <div>last update: {{ last_update }}</div>
-  {% for factor in weather %}
-  {{ config.barometer_to_chinese[factor['elementName']] }}
-  {% if factor['elementName'] == 'HUMD' %}
-  {# use percentage for humidity #}
-  {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
-  {% else %}
-  {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
-  {% endif %}
-  {% endfor %}
-  {% endif %}
+    {% if weather %}<img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">{% endif %}
+    <form action="/" , method="POST" id="weather-form" style="display: none;">
+      <input type="hidden" value="test" id="site" name="site">
+    </form>
+    {% if weather %}
+    <div>last update: {{ last_update }}</div>
+    {% for factor in weather %}
+    {{ config.barometer_to_chinese[factor['elementName']] }}
+    {% if factor['elementName'] == 'HUMD' %}
+    {# use percentage for humidity #}
+    {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
+    {% else %}
+    {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
   </div>
 
   <div id="bg">

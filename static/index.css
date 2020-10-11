@@ -2,12 +2,14 @@
     background-color: aliceblue;
     margin-bottom: 5px;
     width: 100%;
+    height: 50px;
     border: none;
 }
 
 .link {
     text-decoration: none;
     color: rgb(0, 0, 255);
+    margin: 5px;
 }
 
 #sidebar {
