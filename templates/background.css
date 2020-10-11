@@ -16,7 +16,7 @@
 }
 @media screen and (max-width: 600px) {
     #bg {
-        {% if not weather %}background-image: linear-gradient(to right bottom, #3965a8, #4e7eba, #6597cb, #7fb0dc, #9bc9ed);{% endif %}
+        {% if not weather %}background-image: url({{ url_for('static', filename='background/default_mobile.png') }}) {% endif %}
     }
 }
 
