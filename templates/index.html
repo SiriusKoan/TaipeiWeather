@@ -11,6 +11,7 @@
   <!--<link rel="stylesheet" href="{{ url_for('static',filename='background.css') }}">-->
   <title>Taipei Weather</title>
   <link rel="icon" href="{{ url_for('static',filename='icon.jpg') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
   <script>
     function closeMenu() {
       document.getElementById("sidebar").style.display = "none";
@@ -39,30 +40,37 @@
     <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link">Github repo</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" class="open_menu" id="open-button" style="position: absolute;">&#9776;</button>
+    <button onclick="openMenu();" id="open-button" style="position: absolute;">&#9776;</button>
   </div>
-  <div id="weather-element">
-    {% if weather %}<img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">{% endif %}
+  <div id="weather-element" style="position: relative;">
     <form action="/" , method="POST" id="weather-form" style="display: none;">
       <input type="hidden" value="test" id="site" name="site">
     </form>
     {% if weather %}
-    <div>last update: {{ last_update }}</div>
+    <div id="picture-container">
+      <span class="helper"></span><img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">
+    </div>
+    <span style="font-family: 'Noto Sans TC', sans-serif;">last update: {{ last_update }}</span>
     {% for factor in weather %}
-    {{ config.barometer_to_chinese[factor['elementName']] }}
-    {% if factor['elementName'] == 'HUMD' %}
-    {# use percentage for humidity #}
-    {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
-    {% else %}
-    {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
-    {% endif %}
+    <div class="barometer" id="{{ factor['elementName'] | replace('24R', 'Rain24R') }}">
+      <div>{{ config.barometer_to_chinese[factor['elementName']] }}</div>
+      <br>
+      <div>
+      {% if factor['elementName'] == 'HUMD' %}
+        {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
+      {% else %}
+        {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
+      {% endif %}
+      </div>
+    </div>
     {% endfor %}
     {% endif %}
   </div>
 
   <div id="bg">
+    {% if not weather %}
     <div id="map">
-      <img src="{% if not weather %}{{ url_for('static',filename='map.png') }}{% endif %}" usemap="#taipei-map"
+      <img src="{{ url_for('static',filename='map.png') }}" usemap="#taipei-map"
         id="map-img">
       <map name="taipei-map">
         <area onclick="submitSite('北投區');"
@@ -89,6 +97,7 @@
           shape="poly">
       </map>
     </div>
+    {% endif %}
   </div>
   <footer>
     <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
