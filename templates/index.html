@@ -33,24 +33,25 @@
 </head>
 
 <body>
-  <div id="sidebar">
+  <div id="sidebar" style="margin-top: -30px;">
     <button onclick="closeMenu();" id="close_menu">Close &times;</button>
     <div><a href="/" class="link">HomePage</a></div>
     <div><a href="/forecast" class="link">Forecast</a></div>
-    <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link">Github repo</a></div>
+    <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link" target="_blank">Github repo</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" id="open-button" style="position: absolute;">&#9776;</button>
+    <button onclick="openMenu();" id="open-button" style="margin-top: -30px;">&#9776;</button>
   </div>
   <div id="weather-element" style="position: relative;">
     <form action="/" , method="POST" id="weather-form" style="display: none;">
       <input type="hidden" value="test" id="site" name="site">
     </form>
     {% if weather %}
+    <div style="font-family: 'Noto Sans TC', sans-serif; margin-top: 30px;"><b>last update:</b> {{ last_update }}</div>
     <div id="picture-container">
       <span class="helper"></span><img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">
     </div>
-    <span style="font-family: 'Noto Sans TC', sans-serif;">last update: {{ last_update }}</span>
+    
     {% for factor in weather %}
     <div class="barometer" id="{{ factor['elementName'] | replace('24R', 'Rain24R') }}">
       <div>{{ config.barometer_to_chinese[factor['elementName']] }}</div>

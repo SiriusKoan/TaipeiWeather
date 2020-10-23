@@ -135,7 +135,7 @@ area {
 
 #WDIR {
     position: absolute;
-    bottom: 80px;
+    bottom: 90px;
     left: 600px;
 }
 
@@ -162,7 +162,7 @@ area {
         width: 100px;
     }
     #WDIR {
-        left: 250px;
+        left: 125px;
     }
     #TEMP {
         left: 10px;
@@ -171,6 +171,6 @@ area {
         right: 30px;
     }
     #Rain24R, #H_Rain24R {
-        left: 250px;
+        left: 125px;
     }
 }
