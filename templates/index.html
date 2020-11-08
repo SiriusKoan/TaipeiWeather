@@ -33,14 +33,14 @@
 </head>
 
 <body>
-  <div id="sidebar" style="margin-top: -30px;">
+  <div id="sidebar" {% if weather %}style="margin-top: -30px;"{% endif %}>
     <button onclick="closeMenu();" id="close_menu">Close &times;</button>
     <div><a href="/" class="link">HomePage</a></div>
     <div><a href="/forecast" class="link">Forecast</a></div>
     <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link" target="_blank">Github repo</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" id="open-button" style="margin-top: -30px;">&#9776;</button>
+    <button onclick="openMenu();" id="open-button" {% if weather %}style="margin-top: -30px;"{% endif %}>&#9776;</button>
   </div>
   <div id="weather-element" style="position: relative;">
     <form action="/" , method="POST" id="weather-form" style="display: none;">

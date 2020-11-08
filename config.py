@@ -2,6 +2,9 @@ CWB_TOKEN = ""
 host = "http://127.0.0.1:8080"
 server_timezone = 8
 
+BOT_TOKEN = ""
+admin = 0
+
 district_to_site = {
     "北投區": "石牌",
     "松山區": "松山",

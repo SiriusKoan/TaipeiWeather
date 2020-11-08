@@ -7,13 +7,14 @@ import config
 import json
 from importlib import import_module
 import datetime
+from tests import run_test
 
 app = Flask(__name__)
 CORS(app)
 
 
 @app.before_first_request
-def fetch_data():
+def init():
     global data_cache
     data_cache = {
         "forecast_update_time": time.time(),
@@ -22,9 +23,16 @@ def fetch_data():
         "now": update_now(),
     }
 
+    global test
+    test = False
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    global test
+    if not test:
+        test = True
+        run_test()
     if request.method == "GET":
         return render_template("index.html", weather=None)
     if request.method == "POST":

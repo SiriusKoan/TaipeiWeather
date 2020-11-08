@@ -1,6 +1,7 @@
 import requests
 import json
 import config
+from tests import URLTest
 
 
 def update_forecast():
@@ -49,3 +50,4 @@ def update_now():
     data3 = {site["locationName"]: site["weatherElement"]}
 
     return {**data1, **data2, **data3}
+    
