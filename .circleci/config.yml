@@ -2,9 +2,10 @@ version: 2.1
 
 orbs:
   python: circleci/python@0.2.1
+  heroku: circleci/heroku@0.0.10
 
 jobs:
-  build-and-test:
+  build:
     executor: python/default
     steps:
       - checkout
@@ -13,7 +14,11 @@ jobs:
       - python/save-cache
 
 
+
 workflows:
   main:
     jobs:
-      - build-and-test
+      - build
+      - heroku/deploy-via-git:
+          requires:
+            - build
