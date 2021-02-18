@@ -1,17 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 from flask_cors import CORS
-from models import *
+from models import update_forecast, update_now
 import requests
 import time
 import config
 import json
 from importlib import import_module
 import datetime
-from tests import run_test
+from os import getenv
 
 app = Flask(__name__)
 CORS(app)
 
+host = getenv('host')
+timezone = int(getenv('timezone'))
 
 @app.before_first_request
 def init():
@@ -23,27 +25,20 @@ def init():
         "now": update_now(),
     }
 
-    global test
-    test = False
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    global test
-    if not test:
-        test = True
-        run_test()
     if request.method == "GET":
         return render_template("index.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
         weather = json.loads(
             requests.post(
-                "%s/api" % config.host, json={"sitename": site, "data_type": "now"}
+                "%s/api" % host, json={"sitename": site, "data_type": "now"}
             ).text
         )
         last_update = datetime.datetime.fromtimestamp(
-            data_cache["now_update_time"] + config.server_timezone * 3600
+            data_cache["now_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
         return render_template(
             "index.html",
@@ -62,11 +57,11 @@ def forecast():
         site = request.form.get("site")
         weather = json.loads(
             requests.post(
-                "%s/api" % config.host, json={"sitename": site, "data_type": "forecast"}
+                "%s/api" % host, json={"sitename": site, "data_type": "forecast"}
             ).text
         )
         last_update = datetime.datetime.fromtimestamp(
-            data_cache["forecast_update_time"] + config.server_timezone * 3600
+            data_cache["forecast_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
         return render_template(
             "forecast.html",
@@ -89,11 +84,13 @@ def api():
         for site in data:
             if site["locationName"] == sitename:
                 return str(site).replace("'", '"')  # return json
+        return ''
     if data_type == "now":
         if time.time() - data_cache["now_update_time"] > 600:
             data_cache["now"] = update_now()
         data = data_cache["now"]
-        return str(data[config.district_to_site[sitename]]).replace("'", '"')
+        return str(data.get(config.district_to_site[sitename], '')).replace("'", '"')
+
 
 
 if __name__ == "__main__":

@@ -1,10 +1,3 @@
-CWB_TOKEN = ""
-host = "http://127.0.0.1:8080"
-server_timezone = 8
-
-BOT_TOKEN = ""
-admin = 0
-
 district_to_site = {
     "北投區": "石牌",
     "松山區": "松山",
@@ -18,6 +11,13 @@ district_to_site = {
     "南港區": "松山",
     "大同區": "臺北",
     "萬華區": "臺北",
+    "新莊區": "新莊",
+    "板橋區": "板橋",
+    "汐止區": "汐止",
+    "三蘆區": "三重",
+    "中永和區": "中和",
+    "新店區": "屈尺",
+    "淡水區": "淡水",
 }
 
 barometer_to_chinese = {
@@ -45,6 +45,7 @@ barometer_to_chinese = {
     "WD": "風向",
     "Td": "露點溫度",
 }
+
 units = {
     # now
     "TEMP": "°C",

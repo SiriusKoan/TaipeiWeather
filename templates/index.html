@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
   <style>
-    {% include 'background.css'%}
+    {% include 'background.css' %}
   </style>
   <!--<link rel="stylesheet" href="{{ url_for('static',filename='background.css') }}">-->
   <title>Taipei Weather</title>
@@ -33,14 +33,15 @@
 </head>
 
 <body>
-  <div id="sidebar" {% if weather %}style="margin-top: -30px;"{% endif %}>
+  <div id="sidebar" {% if weather %}style="margin-top: -30px;" {% endif %}>
     <button onclick="closeMenu();" id="close_menu">Close &times;</button>
     <div><a href="/" class="link">HomePage</a></div>
     <div><a href="/forecast" class="link">Forecast</a></div>
     <div><a href="https://github.com/SiriusKoan/TaipeiWeather" class="link" target="_blank">Github repo</a></div>
   </div>
   <div>
-    <button onclick="openMenu();" id="open-button" {% if weather %}style="margin-top: -30px;"{% endif %}>&#9776;</button>
+    <button onclick="openMenu();" id="open-button" {% if weather %}style="margin-top: -30px;" {% endif
+      %}>&#9776;</button>
   </div>
   <div id="weather-element" style="position: relative;">
     <form action="/" , method="POST" id="weather-form" style="display: none;">
@@ -51,17 +52,17 @@
     <div id="picture-container">
       <span class="helper"></span><img src="{{ url_for('static',filename='districts/%s.png'%site) }}" alt="{{ site }}">
     </div>
-    
+
     {% for factor in weather %}
     <div class="barometer" id="{{ factor['elementName'] | replace('24R', 'Rain24R') }}">
       <div>{{ config.barometer_to_chinese[factor['elementName']] }}</div>
       <br>
       <div>
-      {% if factor['elementName'] == 'HUMD' %}
+        {% if factor['elementName'] == 'HUMD' %}
         {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
-      {% else %}
+        {% else %}
         {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
-      {% endif %}
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -71,31 +72,40 @@
   <div id="bg">
     {% if not weather %}
     <div id="map">
-      <img src="{{ url_for('static',filename='map.png') }}" usemap="#taipei-map"
-        id="map-img">
+      <img src="{{ url_for('static',filename='map.png') }}" usemap="#taipei-map" id="map-img">
       <map name="taipei-map">
+        <area onclick="submitSite('淡水區');" coords="480,86,473,38,364,6,250,195,357,242,394,333,457,249,544,174,466,131"
+          shape="poly">
         <area onclick="submitSite('北投區');"
-          coords="423,29,398,34,289,141,210,177,133,264,78,338,53,383,91,431,168,412,193,460,229,486,291,432,320,331,427,211,461,85"
-          shape="poly">
+          coords="591,132,525,200,508,197,428,295,451,320,487,310,504,341,567,256,616,156" shape="poly">
         <area onclick="submitSite('士林區');"
-          coords="477,108,453,137,436,205,408,254,378,314,336,333,300,414,243,500,202,484,62,433,82,488,261,578,300,584,340,521,463,467,585,382"
+          coords="624,165,517,341,437,312,427,328,517,373,568,356,665,294,648,254,621,214" shape="poly">
+        <area onclick="submitSite('大同區');" coords="531,381,506,380,508,426,525,427" shape="poly">
+        <area onclick="submitSite('中山區');" coords="578,357,534,380,531,426,563,431,577,407,558,394,602,378"
           shape="poly">
-        <area onclick="submitSite('大同區');" coords="283,583,233,587,227,689,275,691" shape="poly">
-        <area onclick="submitSite('中山區');"
-          coords="344,531,298,594,283,687,356,702,389,645,344,617,400,596,446,592,392,536" shape="poly">
-        <area onclick="submitSite('松山區');" coords="359,616,390,642,372,701,495,687,465,677,455,599" shape="poly">
-        <area onclick="submitSite('內湖區');"
-          coords="554,632,601,645,654,581,645,497,551,442,450,492,409,520,468,594,464,652,491,675" shape="poly">
-        <area onclick="submitSite('萬華區');" coords="230,694,210,691,133,740,156,853,183,865,246,810,212,772"
+        <area onclick="submitSite('松山區');" coords="605,385,559,393,579,409,571,430,623,425,611,415" shape="poly">
+        <area onclick="submitSite('內湖區');" coords="586,352,615,417,691,399,698,354,646,314" shape="poly">
+        <area onclick="submitSite('萬華區');" coords="497,430,462,453,475,505,511,481" shape="poly">
+        <area onclick="submitSite('中正區');" coords="516,427,507,468,554,505,534,463,545,439" shape="poly">
+        <area onclick="submitSite('大安區');" coords="549,436,544,453,531,456,563,502,600,497,585,476,588,440"
           shape="poly">
-        <area onclick="submitSite('中正區');" coords="243,699,308,709,286,761,335,845,318,852,272,813,224,777,240,723"
+        <area onclick="submitSite('信義區');" coords="596,431,587,467,604,501,629,486,643,460,624,431" shape="poly">
+        <area onclick="submitSite('南港區');" coords="649,406,621,423,647,460,627,493,769,472,690,439,690,401"
           shape="poly">
-        <area onclick="submitSite('大安區');" coords="328,710,413,715,399,788,443,850,348,853,293,758" shape="poly">
-        <area onclick="submitSite('信義區');" coords="422,713,491,696,540,762,494,827,453,852,407,784" shape="poly">
-        <area onclick="submitSite('南港區');"
-          coords="495,834,808,794,804,770,655,721,638,685,655,638,553,649,501,680,542,769" shape="poly">
-        <area onclick="submitSite('文山區');" coords="335,857,555,842,576,985,640,1021,564,1049,430,1031,397,953,313,946"
+        <area onclick="submitSite('文山區');" coords="651,501,662,556,691,577,593,582,582,556,541,538,548,506"
           shape="poly">
+        <area onclick="submitSite('中永和區');" coords="516,477,549,514,509,575,441,604,429,546,419,519,478,507"
+          shape="poly">
+        <area onclick="submitSite('板橋區');" coords="462,500,458,443,415,440,323,558,328,598,370,544,415,559,419,514"
+          shape="poly">
+        <area onclick="submitSite('新莊區');"
+          coords="419,436,412,369,357,390,362,422,283,443,264,415,258,463,326,529,371,470" shape="poly">
+        <area onclick="submitSite('三蘆區');" coords="424,322,404,337,436,393,426,434,473,444,506,421,504,384,479,351" shape="poly">
+        <area onclick="submitSite('新店區');"
+          coords="544,544,604,594,695,585,661,697,623,712,629,746,611,772,558,736,442,790,433,749,467,693,422,657,406,641"
+          shape="poly">
+        <area onclick="submitSite('汐止區');"
+          coords="769,466,839,437,863,456,902,410,797,360,704,254,657,308,705,359,694,402,698,440" shape="poly">
       </map>
     </div>
     {% endif %}
