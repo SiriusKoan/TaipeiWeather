@@ -11,6 +11,7 @@ from os import getenv
 
 app = Flask(__name__)
 CORS(app)
+self_request = app.test_client()
 
 host = getenv('host')
 timezone = int(getenv('timezone'))
@@ -32,11 +33,8 @@ def index():
         return render_template("index.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
-        weather = json.loads(
-            requests.post(
-                "%s/api" % host, json={"sitename": site, "data_type": "now"}
-            ).text
-        )
+        global weather
+        weather = self_request.post("/api", json={"sitename": site, "data_type": "now"}).get_json(force=True)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["now_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
@@ -55,11 +53,7 @@ def forecast():
         return render_template("forecast.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
-        weather = json.loads(
-            requests.post(
-                "%s/api" % host, json={"sitename": site, "data_type": "forecast"}
-            ).text
-        )
+        weather = self_request.post("/api", json={"sitename": site, "data_type": "forecast"}).get_json(force=True)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["forecast_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
