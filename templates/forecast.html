@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static',filename='index.css') }}">
   <title>Weather Forecast</title>
   {% if weather %}
-  {% set config = IMPORT('config') %}
+  {% set table = IMPORT('conversion_table') %}
   {% endif %}
   <script>
     function closeMenu() {
@@ -67,14 +67,14 @@
       {% for factor in weather['weatherElement'] %}
       <tr>
         {% if factor['elementName'] != 'PoP6h' %}
-        <td>{{ config.barometer_to_chinese[factor['elementName']] }}</td>
+        <td>{{ table.barometer_to_chinese[factor['elementName']] }}</td>
         {% for val in factor['time'] %}
-        <td>{{ val['elementValue'][0]['value'] }}{{ config.units[factor['elementName']] }}</td>
+        <td>{{ val['elementValue'][0]['value'] }}{{ table.units[factor['elementName']] }}</td>
         {% endfor %}
         {% else %}
-        <td>{{ config.barometer_to_chinese['PoP6h'] }}</td>
+        <td>{{ table.barometer_to_chinese['PoP6h'] }}</td>
         {% for val in factor['time'] %}
-        <td colspan="2">{{ val['elementValue'][0]['value'] }}{{ config.units['PoP6h'] }}</td>
+        <td colspan="2">{{ val['elementValue'][0]['value'] }}{{ table.units['PoP6h'] }}</td>
         {% endfor %}
         {% endif %}
       </tr>

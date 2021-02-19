@@ -28,7 +28,7 @@
     }
   </script>
   {% if weather %}
-  {% set config = IMPORT('config') %}
+  {% set table = IMPORT('conversion_table') %}
   {% endif %}
 </head>
 
@@ -55,13 +55,13 @@
 
     {% for factor in weather %}
     <div class="barometer" id="{{ factor['elementName'] | replace('24R', 'Rain24R') }}">
-      <div>{{ config.barometer_to_chinese[factor['elementName']] }}</div>
+      <div>{{ table.barometer_to_chinese[factor['elementName']] }}</div>
       <br>
       <div>
         {% if factor['elementName'] == 'HUMD' %}
-        {{ ((factor['elementValue'] | float) * 100) | round }}{{ config.units[factor['elementName']] }}
+        {{ ((factor['elementValue'] | float) * 100) | round }}{{ table.units[factor['elementName']] }}
         {% else %}
-        {{ factor['elementValue'] }}{{ config.units[factor['elementName']] }}
+        {{ factor['elementValue'] }}{{ table.units[factor['elementName']] }}
         {% endif %}
       </div>
     </div>

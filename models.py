@@ -1,9 +1,16 @@
 import requests
 import json
-import config
+from flask import Flask
+from flask_cors import CORS
 from os import getenv
 
 CWB_TOKEN = getenv("CWB_TOKEN")
+
+def create_app(name, config):
+    app = Flask(name)
+    app.config.from_object(config)
+    CORS(app)
+    return app
 
 
 def update_forecast():

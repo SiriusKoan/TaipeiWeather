@@ -1,20 +1,17 @@
-from flask import Flask, render_template, request, abort
-from flask_cors import CORS
-from models import update_forecast, update_now
-import requests
+from flask import render_template, request, abort
+from models import create_app, update_forecast, update_now
 import time
-import config
+from conversion_table import district_to_site, barometer_to_chinese, units
 import json
 from importlib import import_module
 import datetime
+import config
 from os import getenv
 
-app = Flask(__name__)
-CORS(app)
+app = create_app('TaipeiWeather', config.config_list[getenv('env')])
+host = getenv("host")
+timezone = int(getenv("timezone"))
 self_request = app.test_client()
-
-host = getenv('host')
-timezone = int(getenv('timezone'))
 
 @app.before_first_request
 def init():
@@ -33,7 +30,6 @@ def index():
         return render_template("index.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
-        global weather
         weather = self_request.post("/api", json={"sitename": site, "data_type": "now"}).get_json(force=True)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["now_update_time"] + timezone * 3600
@@ -83,7 +79,7 @@ def api():
         if time.time() - data_cache["now_update_time"] > 600:
             data_cache["now"] = update_now()
         data = data_cache["now"]
-        return str(data.get(config.district_to_site[sitename], '')).replace("'", '"')
+        return str(data.get(district_to_site[sitename], '')).replace("'", '"')
 
 
 
