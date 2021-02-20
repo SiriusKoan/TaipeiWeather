@@ -15,9 +15,7 @@ jobs:
   test:
     executor: python/default
     steps:
-      - run:
-        - name: test
-        - command: python manage.py run_test
+      - run: python manage.py run_test
 
 
 
