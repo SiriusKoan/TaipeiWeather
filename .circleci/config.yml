@@ -16,6 +16,7 @@ jobs:
     executor: python/default
     steps:
       - checkout
+      - python/install-deps
       - run:
           name: Test
           command: python manage.py run_test
