@@ -12,6 +12,12 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
+  test:
+    executor: python/default
+    steps:
+      - run:
+        - name: test
+        - command: python manage.py run_test
 
 
 
@@ -19,6 +25,7 @@ workflows:
   main:
     jobs:
       - build
+      - test
       - heroku/deploy-via-git:
           requires:
             - build

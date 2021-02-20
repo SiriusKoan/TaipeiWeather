@@ -1,5 +1,6 @@
-from flask import render_template, request, abort
-from models import create_app, update_forecast, update_now
+from flask import render_template, request, abort, Blueprint, Flask
+from flask_cors import CORS
+from models import update_forecast, update_now
 import time
 from conversion_table import district_to_site, barometer_to_chinese, units
 import json
@@ -8,12 +9,17 @@ import datetime
 import config
 from os import getenv
 
-app = create_app('TaipeiWeather', config.config_list[getenv('env')])
-host = getenv("host")
-timezone = int(getenv("timezone"))
+app = Flask(__name__)
+app.config.from_object(config.config_list[getenv("env")])
+CORS(app)
+main = Blueprint("main", __name__)
 self_request = app.test_client()
 
-@app.before_first_request
+host = getenv("host")
+timezone = int(getenv("timezone"))
+
+
+@main.before_app_first_request
 def init():
     global data_cache
     data_cache = {
@@ -24,13 +30,15 @@ def init():
     }
 
 
-@app.route("/", methods=["GET", "POST"])
+@main.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         return render_template("index.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
-        weather = self_request.post("/api", json={"sitename": site, "data_type": "now"}).get_json(force=True)
+        weather = self_request.post(
+            "/api", json={"sitename": site, "data_type": "now"}
+        ).get_json(force=True)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["now_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
@@ -43,13 +51,15 @@ def index():
         )
 
 
-@app.route("/forecast", methods=["GET", "POST"])
+@main.route("/forecast", methods=["GET", "POST"])
 def forecast():
     if request.method == "GET":
         return render_template("forecast.html", weather=None)
     if request.method == "POST":
         site = request.form.get("site")
-        weather = self_request.post("/api", json={"sitename": site, "data_type": "forecast"}).get_json(force=True)
+        weather = self_request.post(
+            "/api", json={"sitename": site, "data_type": "forecast"}
+        ).get_json(force=True)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["forecast_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
@@ -61,9 +71,11 @@ def forecast():
         )
 
 
-@app.route("/api", methods=["POST"])
+@main.route("/api", methods=["POST"])
 def api():
     payload = request.get_json()
+    if not payload:
+        return ""
     sitename = payload["sitename"]
     data_type = payload["data_type"]
     if data_type == "forecast":
@@ -74,14 +86,17 @@ def api():
         for site in data:
             if site["locationName"] == sitename:
                 return str(site).replace("'", '"')  # return json
-        return ''
+        return ""
     if data_type == "now":
         if time.time() - data_cache["now_update_time"] > 600:
             data_cache["now"] = update_now()
         data = data_cache["now"]
-        return str(data.get(district_to_site[sitename], '')).replace("'", '"')
-
+        try:
+            return str(data.get(district_to_site[sitename], "")).replace("'", '"')
+        except:
+            return ""
 
 
 if __name__ == "__main__":
+    app.register_blueprint(main)
     app.run(host="127.0.0.1", port=8080, debug=True)
