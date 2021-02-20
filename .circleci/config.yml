@@ -15,8 +15,10 @@ jobs:
   test:
     executor: python/default
     steps:
-      - run: python manage.py run_test
-
+      - checkout
+      - run:
+          name: Test
+          command: python manage.py run_test
 
 
 workflows:
