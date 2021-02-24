@@ -39,7 +39,7 @@ def index():
         if time.time() - data_cache["now_update_time"] > 600:
             data_cache["now"] = update_now()
             data_cache["now_update_time"] = time.time()
-        weather = data_cache["now"].get(district_to_site[sitename], None)
+        weather = data_cache["now"].get(district_to_site.get(sitename, None), None)
         last_update = datetime.datetime.fromtimestamp(
             data_cache["now_update_time"] + timezone * 3600
         ).strftime("%Y-%m-%d %H:%M:%S")
