@@ -5,7 +5,7 @@ from app import main
 
 
 def create_app(config_name):
-    app = Flask(__name__)
+    app = Flask("app")
     app.config.from_object(config.config_list[config_name])
     CORS(app)
     app.register_blueprint(main)

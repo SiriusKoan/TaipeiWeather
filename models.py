@@ -1,6 +1,7 @@
 import requests
 import json
 from os import getenv
+from flask import url_for
 
 CWB_TOKEN = getenv("CWB_TOKEN")
 

@@ -3,7 +3,7 @@ from test_helper import create_app
 from flask_script import Manager, Shell
 
 
-app = create_app("testing")
+app = create_app("development")
 manager = Manager(app)
 
 
@@ -16,7 +16,7 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 def run_test():
     print("Start testing.")
     tests = unittest.TestLoader().discover("tests")
-    unittest.TextTestRunner().run(tests)
+    unittest.TextTestRunner(verbosity=2).run(tests)
 
 
 if __name__ == "__main__":

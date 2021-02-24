@@ -1,6 +1,6 @@
 import unittest
 from test_helper import create_app
-from flask import current_app, url_for
+from flask import url_for
 import cases
 
 
