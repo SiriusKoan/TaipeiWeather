@@ -19,6 +19,72 @@
       document.getElementById("sidebar").style.display = "block";
       document.getElementById("open-button").style.display = "none";
     }
+
+    let taipei_districts = [
+      "北投區",
+      "松山區",
+      "士林區",
+      "內湖區",
+      "中山區",
+      "中正區",
+      "信義區",
+      "大安區",
+      "文山區",
+      "南港區",
+      "大同區",
+      "萬華區",
+    ]
+    let new_taipei_districts = [
+      "板橋區",
+      "三重區",
+      "中和區",
+      "永和區",
+      "新莊區",
+      "新店區",
+      "土城區",
+      "蘆洲區",
+      "樹林區",
+      "汐止區",
+      "鶯歌區",
+      "三峽區",
+      "淡水區",
+      "瑞芳區",
+      "五股區",
+      "泰山區",
+      "林口區",
+      "深坑區",
+      "石碇區",
+      "坪林區",
+      "三芝區",
+      "石門區",
+      "八里區",
+      "平溪區",
+      "雙溪區",
+      "貢寮區",
+      "金山區",
+      "萬里區",
+      "烏來區",
+    ]
+
+    function change_option() {
+      let county = document.getElementById("county").value;
+      let districts = document.getElementById("site")
+      districts.innerText = null;
+      if (county == "台北市") {
+        for (var i in taipei_districts) {
+          option = document.createElement("option");
+          option.text = taipei_districts[i];
+          districts.add(option);
+        }
+      }
+      if (county == "新北市") {
+        for (var i in new_taipei_districts) {
+          option = document.createElement("option");
+          option.text = new_taipei_districts[i];
+          districts.add(option);
+        } 
+      }
+    }
   </script>
 </head>
 
@@ -33,19 +99,11 @@
     <button onclick="openMenu();" class="open_menu" id="open-button" style="position: absolute;">&#9776;</button>
   </div>
   <form action="/forecast" , method="POST" style="text-align: center;">
+    <select id="county" onchange="change_option();">
+      <option value="台北市">台北市</option>
+      <option value="新北市">新北市</option>
+    </select>
     <select name="site" id="site" required>
-      <option value="北投區">北投區</option>
-      <option value="松山區">松山區</option>
-      <option value="士林區">士林區</option>
-      <option value="內湖區">內湖區</option>
-      <option value="中山區">中山區</option>
-      <option value="中正區">中正區</option>
-      <option value="信義區">信義區</option>
-      <option value="大安區">大安區</option>
-      <option value="文山區">文山區</option>
-      <option value="南港區">南港區</option>
-      <option value="大同區">大同區</option>
-      <option value="萬華區">萬華區</option>
     </select>
     <input type="submit" value="查詢">
   </form>
@@ -85,6 +143,11 @@
   <footer style="bottom: -150px;">
     <span>© 2020 <a href="https://github.com/SiriusKoan" target="_blank">SiriusKoan</a> & Red</span>
   </footer>
+  <script>
+    let county = document.getElementById("county");
+    county.value = "台北市";
+    change_option();
+  </script>
 </body>
 
 </html>

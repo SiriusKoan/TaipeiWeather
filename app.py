@@ -64,7 +64,6 @@ def forecast():
         data = data_cache["forecast"]
         weather = None
         for site in data:
-            print(site["locationName"])
             if site["locationName"] == sitename:
                 weather = site
         last_update = datetime.datetime.fromtimestamp(
