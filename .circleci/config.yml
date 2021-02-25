@@ -13,11 +13,6 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run:
-          name: env-setting
-          command: |
-            echo $TELEGRAM_BOT_TOKEN
-            echo $TELEGRAM_CHAT_ID
   test:
     executor: python/default
     steps:
@@ -40,7 +35,5 @@ workflows:
       - telegram/notify:
           requires:
             - heroku/deploy-via-git
-          telegram-bot-token: TELEGRAM_BOT_TOKEN
-          telegram-chat-id: TELEGRAM_CHAT_ID
           message: 'TaipeiWeather successfully deploy to Heroku! [open](https://taipeiweather.herokuapp.com)'
           parse_mode: 'Markdown'
