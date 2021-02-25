@@ -62,7 +62,9 @@ def forecast():
             data_cache["forecast"] = update_forecast()
             data_cache["forecast_update_time"] = time.time()
         data = data_cache["forecast"]
+        weather = None
         for site in data:
+            print(site["locationName"])
             if site["locationName"] == sitename:
                 weather = site
         last_update = datetime.datetime.fromtimestamp(
@@ -74,34 +76,6 @@ def forecast():
             IMPORT=import_module,
             last_update=last_update,
         )
-
-
-# @main.route("/api", methods=["POST"])
-# def api():
-#     payload = request.get_json()
-#     if not payload:
-#         return ""
-#     sitename = payload["sitename"]
-#     data_type = payload["data_type"]
-#     if data_type == "forecast":
-#         if time.time() - data_cache["forecast_update_time"] > 600:
-#             # update every ten minutes
-#             data_cache["forecast"] = update_forecast()
-#             data_cache["forecast_update_time"] = time.time()
-#         data = data_cache["forecast"]
-#         for site in data:
-#             if site["locationName"] == sitename:
-#                 return str(site).replace("'", '"')  # return json
-#         return ""
-#     if data_type == "now":
-#         if time.time() - data_cache["now_update_time"] > 600:
-#             data_cache["now"] = update_now()
-#             data_cache["now_update_time"] = time.time()
-#         data = data_cache["now"]
-#         try:
-#             return str(data.get(district_to_site[sitename], "")).replace("'", '"')
-#         except:
-#             return ""
 
 
 if __name__ == "__main__":
