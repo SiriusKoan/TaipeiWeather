@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   python: circleci/python@0.2.1
   heroku: circleci/heroku@0.0.10
+  telegram: woltsu/telegram@0.0.9
 
 jobs:
   build:
@@ -30,3 +31,8 @@ workflows:
       - heroku/deploy-via-git:
           requires:
             - build
+      - telegram/notify:
+          requires:
+            - heroku/deploy-via-git
+          telegram-bot-token: TELEGRAM_BOT_TOKEN
+          message: 'TaipeiWeather successfully deploy to Heroku!'
