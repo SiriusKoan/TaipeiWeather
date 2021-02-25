@@ -35,4 +35,6 @@ workflows:
           requires:
             - heroku/deploy-via-git
           telegram-bot-token: TELEGRAM_BOT_TOKEN
-          message: 'TaipeiWeather successfully deploy to Heroku!'
+          telegram-chat-id: TELEGRAM_CHAT_ID
+          message: 'TaipeiWeather successfully deploy to Heroku! [open](https://taipeiweather.herokuapp.com)'
+          parse_mode: 'Markdown'
