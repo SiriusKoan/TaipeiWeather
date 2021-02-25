@@ -13,6 +13,11 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
+      - run:
+          name: env-setting
+          command: |
+            echo $TELEGRAM_BOT_TOKEN
+            echo $TELEGRAM_CHAT_ID
   test:
     executor: python/default
     steps:
@@ -31,6 +36,7 @@ workflows:
       - heroku/deploy-via-git:
           requires:
             - build
+            - test
       - telegram/notify:
           requires:
             - heroku/deploy-via-git
