@@ -3,7 +3,7 @@ from test_helper import create_app
 from flask_script import Manager, Shell
 
 
-app = create_app("development")
+app = create_app("production")
 manager = Manager(app)
 
 
